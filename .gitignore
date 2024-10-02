@@ -1,0 +1,91 @@
+# compiled output
+dist
+tmp
+/out-tsc
+
+# cypress e2e systemtest
+**/*-e2e*/cypress/reports
+**/*-e2e*/cypress/results
+**/*-e2e*/cypress/screenshots
+**/*-e2e*/cypress/videos
+
+# dependencies
+node_modules
+generated_sources
+
+# IDEs and editors
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+bin/
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# IntelliJ
+.idea
+*.ipr
+*.iml
+*.iws
+
+# NetBeans
+nb-configuration.xml
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+# https://github.com/takari/maven-wrapper#usage-without-binary-jar
+.mvn/wrapper/maven-wrapper.jar
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+access*.log
+
+# System Files
+.DS_Store
+Thumbs.db
+
+.angular
+
+# generierte openApi Ordner
+generated-api/
+
+# detekt-datei fuer ausnahmen vom standard
+detekt-config.yml
+
+*.log
+
+# Vim
+*.swp
+*.swo
+
+# patch
+*.orig
+*.rej
+
+**/ObjectStore
+
+# nx
+.nx/cache
+.nx/workspace-data

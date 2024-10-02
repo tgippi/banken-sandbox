@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: bankensandbox
+      POSTGRES_PASSWORD: bankensandbox
+      POSTGRES_DB: bankensandbox
+
+  banken-backend:
+    build:
+      context: ./banken-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bankensandbox
+      SPRING_DATASOURCE_USERNAME: bankensandbox
+      SPRING_DATASOURCE_PASSWORD: bankensandbox
+
+  banken-frontend:
+    build:
+      context: ./banken-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+
+  nginx-proxy:
+    image: "nginx"
+    volumes:
+      - "./nginx.conf:/etc/nginx/nginx.conf"
+    ports:
+      - "80:80"
+    depends_on:
+      - banken-backend
+      - banken-frontend

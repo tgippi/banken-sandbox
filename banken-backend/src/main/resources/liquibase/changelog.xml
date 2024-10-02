@@ -1,0 +1,36 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="banken-schema" author="tgippi">
+        <createTable tableName="bank">
+            <column name="blz" type="varchar(8)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bic" type="varchar(11)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="banken-testdaten" author="tgippi">
+        <loadUpdateData primaryKey="blz" tableName="bank" file="liquibase/data/bundesbank-bankleitzahlen.csv" separator=";">
+            <column name="blz" header="Bankleitzahl"/>
+            <column header="Merkmal" type="skip"/>
+            <column name="name" header="Bezeichnung"/>
+            <column header="PLZ" type="skip"/>
+            <column header="Ort" type="skip"/>
+            <column header="Kurzbezeichnung" type="skip"/>
+            <column header="PAN" type="skip"/>
+            <column name="bic" header="BIC"/>
+            <column header="Prüfzifferberechnungsmethode" type="skip"/>
+            <column header="Datensatznummer" type="skip"/>
+            <column header="Änderungskennzeichen" type="skip"/>
+            <column header="Bankleitzahllöschung" type="skip"/>
+            <column header="Nachfolge-Bankleitzahl" type="skip"/>
+        </loadUpdateData>
+    </changeSet>
+
+</databaseChangeLog>

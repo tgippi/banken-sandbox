@@ -1,0 +1,107 @@
+openapi: 3.0.3
+info:
+  title: Bank Service
+  version: 1.0.0
+paths:
+  /api/v1/banken:
+    get:
+      tags:
+        - Bank
+      operationId: alleBanken
+      description: Abruf aller erfassten Banken
+      responses:
+        200:
+          description: Alle erfassten Banken
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bank'
+    put:
+      tags:
+        - Bank
+      operationId: erstelleBank
+      description: Erstellen einer neuen Bank
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Bank"
+      responses:
+        201:
+          description: OK
+        400:
+          description: Ungültiger Request
+        403:
+          description: Keine Berechtigung.
+
+  /api/v1/iban:
+    post:
+      tags:
+        - IBAN
+      operationId: pruefeIban
+      description: Prüft die übergebene Iban auf Gültigkeit und gibt optional die Informationen
+        zur zugehörigen Bank zurück
+      responses:
+        200:
+          description: Iban geprüft
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IbanResponse"
+        400:
+          description: Falsches Format.
+        403:
+          description: Keine Berechtigung.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IbanRequest"
+
+components:
+  schemas:
+    Bank:
+      type: object
+      required:
+        - name
+        - bic
+        - blz
+      properties:
+        name:
+          description: "Name der Bank"
+          type: string
+          minLength: 3
+          maxLength: 255
+        bic:
+          description: "BIC der Bank"
+          type: string
+          pattern: '^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$'
+        blz:
+          description: "8-stellige Bankleitzahl"
+          type: string
+          pattern: '^[0-9]{8}$'
+    IbanRequest:
+      type: object
+      required:
+        - iban
+      properties:
+        iban:
+          description: "IBAN"
+          type: string
+    IbanResponse:
+      type: object
+      required:
+        - iban
+        - isValid
+      properties:
+        iban:
+          description: "IBAN"
+          type: string
+        isValid:
+          description: "Information ob es sich um eine gültige IBAN handelt"
+          type: boolean
+        bank:
+          $ref: "#/components/schemas/Bank"
