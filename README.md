@@ -36,6 +36,15 @@ Die Applikation ist anschließend unter [dieser URL](http://localhost:80/) errei
 
 ### Offene Themen
 
-- Testing (react)
-- Authentifizierung (OIDC)
+- Security
+  - Authentifizierung (OIDC)
+  - Security Header
+  - Härtung (Image)
+  - Pen-Test (ZAProxy?)
+- UI
+  - Styling
+  - Refactoring (best practices React?)
+- Performance
+  - Tests via JMeter?
+  - Native Build
 - Betrieb in Cloud / Kubernetes
