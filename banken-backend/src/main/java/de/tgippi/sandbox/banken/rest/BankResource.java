@@ -2,7 +2,7 @@ package de.tgippi.sandbox.banken.rest;
 
 import de.tgippi.sandbox.banken.Bank;
 import de.tgippi.sandbox.banken.BankApi;
-import de.tgippi.sandbox.banken.service.BankService;
+import de.tgippi.sandbox.banken.service.bank.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,7 +1,8 @@
-package de.tgippi.sandbox.banken.service;
+package de.tgippi.sandbox.banken.service.bank;
 
 import de.tgippi.sandbox.banken.persistence.BankEntity;
 import de.tgippi.sandbox.banken.repository.BankRepository;
+import de.tgippi.sandbox.banken.service.iban.Iban;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -26,7 +27,8 @@ class DeutscheIbanBankResolverTest {
 
     @Test
     public void test_findBankFuerDeutscheIban() {
-        var iban = "DE02120300000000202051";
+        var iban = Mockito.mock(Iban.class);
+        when(iban.getValue()).thenReturn("DE02120300000000202051");
         var bank = Mockito.mock(BankEntity.class);
         when(bankRepository.findByBlz("12030000")).thenReturn(List.of(bank));
         assertThat(sut.findeBankFuerIban(iban)).isPresent();
@@ -34,7 +36,8 @@ class DeutscheIbanBankResolverTest {
 
     @Test
     public void test_findBankFuerAuslaendischeIban() {
-        var iban = "EN02120300000000202051";
+        var iban = Mockito.mock(Iban.class);
+        when(iban.getValue()).thenReturn("EN02120300000000202051");
         verifyNoInteractions(bankRepository);
         assertThat(sut.findeBankFuerIban(iban)).isEmpty();
     }

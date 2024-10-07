@@ -3,8 +3,10 @@ package de.tgippi.sandbox.banken.rest;
 import de.tgippi.sandbox.banken.IbanApi;
 import de.tgippi.sandbox.banken.IbanRequest;
 import de.tgippi.sandbox.banken.IbanResponse;
-import de.tgippi.sandbox.banken.service.BankService;
-import de.tgippi.sandbox.banken.service.IbanValidatorService;
+import de.tgippi.sandbox.banken.service.bank.BankService;
+import de.tgippi.sandbox.banken.service.iban.Iban;
+import de.tgippi.sandbox.banken.service.iban.IbanFactory;
+import de.tgippi.sandbox.banken.service.iban.InvalidIbanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,22 +15,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class IbanResource implements IbanApi {
 
     @Autowired
-    private IbanValidatorService ibanValidatorService;
+    private IbanFactory ibanFactory;
 
     @Autowired
     private BankService bankService;
 
     @Override
     public ResponseEntity<IbanResponse> pruefeIban(IbanRequest ibanRequest) {
-        final String iban = ibanRequest.getIban().replaceAll("\\s+", "");;
-        if (!ibanValidatorService.isValidIban(iban))
-            return ResponseEntity.ok(new IbanResponse(iban, false));
-
-        return ResponseEntity.ok(erstelleResponse(iban));
+        try {
+            final Iban iban = ibanFactory.erstelleIbanFuerString(ibanRequest.getIban());
+            return ResponseEntity.ok(erstelleResponse(iban));
+        } catch (InvalidIbanException e) {
+            return ResponseEntity.ok(new IbanResponse(ibanRequest.getIban(), false));
+        }
     }
 
-    private IbanResponse erstelleResponse(String iban) {
-        final IbanResponse response = new IbanResponse(iban, true);
+    private IbanResponse erstelleResponse(Iban iban) {
+        final IbanResponse response = new IbanResponse(iban.getValue(), true);
         bankService.findeBankFuerIban(iban).ifPresent((bank) -> {
             response.setBank(BankConverter.entityToDto(bank));
         });

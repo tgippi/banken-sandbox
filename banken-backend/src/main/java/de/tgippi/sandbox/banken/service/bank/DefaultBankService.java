@@ -1,7 +1,8 @@
-package de.tgippi.sandbox.banken.service;
+package de.tgippi.sandbox.banken.service.bank;
 
 import de.tgippi.sandbox.banken.persistence.BankEntity;
 import de.tgippi.sandbox.banken.repository.BankRepository;
+import de.tgippi.sandbox.banken.service.iban.Iban;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,11 +12,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class DefaultBankService implements BankService {
+class DefaultBankService implements BankService {
 
     private BankRepository bankRepository;
-
-    private IbanValidatorService ibanValidatorService;
 
     private List<BankResolver> bankResolvers;
 
@@ -39,9 +38,7 @@ public class DefaultBankService implements BankService {
     }
 
     @Override
-    public Optional<BankEntity> findeBankFuerIban(final String iban) {
-        if (!ibanValidatorService.isValidIban(iban)) return Optional.empty();
-
+    public Optional<BankEntity> findeBankFuerIban(final Iban iban) {
         return bankResolvers.stream()
                 .map(bankResolver -> bankResolver.findeBankFuerIban(iban))
                 .filter(Optional::isPresent)
@@ -51,11 +48,6 @@ public class DefaultBankService implements BankService {
     @Autowired
     public void setBankRepository(BankRepository bankRepository) {
         this.bankRepository = bankRepository;
-    }
-
-    @Autowired
-    public void setIbanValidatorService(IbanValidatorService ibanValidatorService) {
-        this.ibanValidatorService = ibanValidatorService;
     }
 
     @Autowired

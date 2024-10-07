@@ -1,14 +1,15 @@
-package de.tgippi.sandbox.banken.service;
+package de.tgippi.sandbox.banken.service.bank;
 
 import de.tgippi.sandbox.banken.persistence.BankEntity;
 import de.tgippi.sandbox.banken.repository.BankRepository;
+import de.tgippi.sandbox.banken.service.iban.Iban;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-public class DeutscheIbanBankResolver implements BankResolver {
+class DeutscheIbanBankResolver implements BankResolver {
 
     private final int BLZ_START_INDEX = 4;
     private final int BLZ_LENGTH = 8;
@@ -16,11 +17,12 @@ public class DeutscheIbanBankResolver implements BankResolver {
     private BankRepository bankRepository;
 
     @Override
-    public Optional<BankEntity> findeBankFuerIban(String iban) {
-        if (!iban.startsWith("DE"))
+    public Optional<BankEntity> findeBankFuerIban(Iban iban) {
+        final String ibanString = iban.getValue();
+        if (!ibanString.startsWith("DE"))
             return Optional.empty();
 
-        var blz = extrahiereBankleitzahl(iban);
+        var blz = extrahiereBankleitzahl(ibanString);
         return bankRepository.findByBlz(blz).stream().findFirst();
     }
 

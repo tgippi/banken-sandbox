@@ -1,7 +1,8 @@
-package de.tgippi.sandbox.banken.service;
+package de.tgippi.sandbox.banken.service.bank;
 
 import de.tgippi.sandbox.banken.persistence.BankEntity;
 import de.tgippi.sandbox.banken.repository.BankRepository;
+import de.tgippi.sandbox.banken.service.iban.Iban;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,7 +16,6 @@ import static org.mockito.Mockito.*;
 class DefaultBankServiceTest {
 
     BankRepository bankRepository;
-    IbanValidatorService ibanValidatorService;
     BankResolver bankResolver;
 
     DefaultBankService sut = new DefaultBankService();
@@ -23,11 +23,9 @@ class DefaultBankServiceTest {
     @BeforeEach
     public void setup() {
         bankRepository = Mockito.mock(BankRepository.class);
-        ibanValidatorService = Mockito.mock(IbanValidatorService.class);
         bankResolver = Mockito.mock(BankResolver.class);
 
         sut.setBankRepository(bankRepository);
-        sut.setIbanValidatorService(ibanValidatorService);
         sut.setBankResolvers(List.of(bankResolver));
     }
 
@@ -42,27 +40,18 @@ class DefaultBankServiceTest {
 
     @Test
     public void test_findeBankFuerGueltigeDeutscheIban() {
-        var iban = "DE02120300000000202051";
+        var iban = Mockito.mock(Iban.class);
+        when(iban.getValue()).thenReturn("DE02120300000000202051");
         var bank = Mockito.mock(BankEntity.class);
-        when(ibanValidatorService.isValidIban(iban)).thenReturn(true);
         when(bankResolver.findeBankFuerIban(iban)).thenReturn(Optional.of(bank));
         assertThat(sut.findeBankFuerIban(iban)).hasValue(bank);
     }
 
     @Test
     public void test_findeKeineBankFuerGueltigeDeutscheIban() {
-        var iban = "DE02120300000000202051";
-        when(ibanValidatorService.isValidIban(iban)).thenReturn(true);
+        var iban = Mockito.mock(Iban.class);
+        when(iban.getValue()).thenReturn("DE02120300000000202051");
         when(bankResolver.findeBankFuerIban(iban)).thenReturn(Optional.empty());
         assertThat(sut.findeBankFuerIban(iban)).isEmpty();
     }
-
-    @Test
-    public void test_findBankFuerUngueltigeIban() {
-        var iban = "123";
-        when(ibanValidatorService.isValidIban(iban)).thenReturn(false);
-        verifyNoInteractions(bankRepository);
-        assertThat(sut.findeBankFuerIban(iban)).isEmpty();
-    }
-
 }

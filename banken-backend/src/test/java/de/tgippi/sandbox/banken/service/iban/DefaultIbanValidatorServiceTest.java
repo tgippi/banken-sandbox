@@ -1,4 +1,4 @@
-package de.tgippi.sandbox.banken.service;
+package de.tgippi.sandbox.banken.service.iban;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -18,7 +18,8 @@ class DefaultIbanValidatorServiceTest {
         "LI0208800000017197386",
     })
     void testValidateValidIban(String iban) {
-        assertThat(sut.isValidIban(iban)).isTrue();
+
+        assertThat(sut.istGueltigeIban(iban)).isTrue();
     }
 
     @ParameterizedTest
@@ -28,6 +29,6 @@ class DefaultIbanValidatorServiceTest {
             "ABC02120300000000202051",
     })
     void testValidateInvalidIban(String iban) {
-        assertThat(sut.isValidIban(iban)).isFalse();
+        assertThat(sut.istGueltigeIban((iban))).isFalse();
     }
 }
