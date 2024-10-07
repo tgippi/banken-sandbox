@@ -8,11 +8,12 @@ public class IbanFactory {
 
     private IbanValidatorService ibanValidatorService;
 
-    public Iban erstelleIbanFuerString(String iban) throws InvalidIbanException {
-        if (!ibanValidatorService.istGueltigeIban(iban)) {
-            throw new InvalidIbanException(String.format("Ungültige Iban %s", iban));
+    public Iban erstelleIbanFuerString(String ibanString) throws InvalidIbanException {
+        final Iban iban = new Iban(ibanString);
+        if (!ibanValidatorService.istGueltigeIban(iban.getValue())) {
+            throw new InvalidIbanException(String.format("Ungültige Iban %s", ibanString));
         }
-        return new Iban(iban);
+        return iban;
     }
 
     @Autowired
