@@ -31,7 +31,7 @@ function IbanForm() {
 
 
     function ValidierungsFehler() {
-        return <span className="validierungsFehler">* (Pflichtfeld)</span>
+        return <span className="validierungsFehler" data-testid="iban-pflichtfeld">* (Pflichtfeld)</span>
     }
 
     function IbanFehler() {

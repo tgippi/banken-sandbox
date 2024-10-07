@@ -33,25 +33,28 @@ function BankForm(props: any) {
     return (
         <>
             <form onSubmit={handleSubmit((data) => submitBank(data))}>
-                {meldung && <span>{meldung}</span>}
+                {meldung && <span data-testid="bankform-meldung">{meldung}</span>}
 
                 <p>
                     <input {...register("name", {required: true})} id="name" name="name" type="text"
-                           placeholder="Name"/>
-                    {errors.name && <ValidierungsFehler></ValidierungsFehler>}
+                           placeholder="Name" data-testid="bankform-name"/>
+                    {errors.name && <span data-testid="bankform-pflichtfeld-name"><ValidierungsFehler></ValidierungsFehler></span>}
+                </p>
+
+                        <p>
+                        <input {...register("blz", {required: true})} id="blz" name="blz" type="text" placeholder="BLZ"
+                           data-testid="bankform-blz"/>
+                    {errors.blz && <span data-testid="bankform-pflichtfeld-blz"><ValidierungsFehler></ValidierungsFehler></span>}
                 </p>
 
                 <p>
-                    <input {...register("blz", {required: true})} id="blz" name="blz" type="text" placeholder="BLZ"/>
-                    {errors.blz && <ValidierungsFehler></ValidierungsFehler>}
+                    <input {...register("bic", {required: true})} id="bic" name="bic" type="text" placeholder="BIC"
+                           data-testid="bankform-bic"/>
+                    {errors.bic &&
+                        <span data-testid="bankform-pflichtfeld-bic"><ValidierungsFehler></ValidierungsFehler></span>}
                 </p>
 
-                <p>
-                    <input {...register("bic", {required: true})} id="bic" name="bic" type="text" placeholder="BIC"/>
-                    {errors.bic && <ValidierungsFehler></ValidierungsFehler>}
-                </p>
-
-                <input type="submit" value="Bank speichern"/>
+                <input type="submit" data-testid="bankform-submit" value="Bank speichern"/>
             </form>
         </>
     )

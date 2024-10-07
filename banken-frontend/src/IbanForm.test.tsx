@@ -28,6 +28,20 @@ test('Anzeige der Iban Form', async () => {
     expect(screen.getByTestId('bic')).toBeEnabled()
 });
 
+test('Leere IBAN validieren', async () => {
+    // ARRANGE
+    render(<IbanForm/>)
+
+    // ACT
+    await screen.findByRole('heading')
+    await pruefeIban('');
+
+    // ASSERT
+    await waitFor(() => {
+        expect(screen.getByTestId('iban-pflichtfeld')).toBeVisible();
+    });
+});
+
 test('Gültige IBAN validieren', async () => {
     nock(OpenAPI.BASE)
         .post('/api/v1/iban')
