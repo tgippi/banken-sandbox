@@ -35,7 +35,7 @@ function IbanForm() {
     }
 
     function IbanFehler() {
-        return <span className="ibanUngueltig">* (Iban ungültig)</span>
+        return <span className="ibanUngueltig" data-testid="iban-ungueltig">* (Iban ungültig)</span>
     }
 
     return (
@@ -45,24 +45,26 @@ function IbanForm() {
             <form onSubmit={handleSubmit((data) => submitIban(data))}>
                 <p>
                     <input {...register("iban", {required: true})} id="iban" name="iban" type="text"
-                           placeholder="iban"/>
+                           data-testid="iban" placeholder="iban"/>
                     {errors.iban && <ValidierungsFehler></ValidierungsFehler>}
                     {(!errors.iban && ibanInvalid) && <IbanFehler></IbanFehler>}
                 </p>
 
                 <p>
                     <input id="bankname" name="bankname" type="text" readOnly={true} value={bankName}
-                           placeholder="Bank"/>
+                           data-testid="bankname" placeholder="Bank"/>
                 </p>
                 <p>
-                    <input id="blz" name="blz" type="text" readOnly={true} value={blz} placeholder="BLZ"/>
+                    <input id="blz" name="blz" type="text" readOnly={true} value={blz} placeholder="BLZ"
+                           data-testid="blz"/>
                 </p>
 
                 <p>
-                    <input id="bic" name="bic" type="text" readOnly={true} value={bic} placeholder="BIC"/>
+                    <input id="bic" name="bic" type="text" readOnly={true} value={bic} placeholder="BIC"
+                           data-testid="bic"/>
                 </p>
 
-                <input type="submit" value="IBAN Prüfen"/>
+                <input type="submit" value="IBAN Prüfen" data-testid="iban-submit"/>
             </form>
         </>
     )
